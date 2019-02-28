@@ -1,0 +1,33 @@
+<div class="box">
+  <form class="form" [formGroup]="newUserForm" (ngSubmit)="submit()">
+    <div class="field">
+      <label for="firstName" class="label">First Name</label>
+      <div class="control">
+        <input type="text" class="input" name="firstName" id="firstName" formControlName="firstName">
+      </div>
+    </div>
+    <div class="field">
+      <label for="lastName" class="label">Last Name</label>
+      <div class="control">
+        <input type="text" class="input" name="lastName" id="lastName" formControlName="lastName">
+      </div>
+    </div>
+    <div class="field">
+      <label for="email" class="label">Email Address</label>
+      <div class="control">
+        <input type="email" class="input" name="email" id="email" formControlName="email">
+      </div>
+    </div>
+    <div class="field">
+      <label for="password" class="label">Password</label>
+      <div class="control">
+        <input class="input" formControlName="password" id="password" name="password" type="password">
+      </div>
+    </div>
+
+    <button [disabled]="f.invalid || saved" class="button is-warning" [ngClass]="{'is-loading': saving}">Save User</button>
+    <a (click)="saved = false" class="is-link">New</a>
+
+  </form>
+
+</div>

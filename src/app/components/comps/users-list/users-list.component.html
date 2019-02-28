@@ -1,0 +1,18 @@
+<table class="table is-bordered is-striped is-hoverable is-fullwidth">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Created</th>
+      <th>Updated</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr (click)="selected = i" *ngFor="let user of users$ | async; let i = index" [ngClass]="{'is-selected': selected === i}">
+      <td> {{ user.firstName + ' ' + user.lastName }} </td>
+      <td> {{ user.email }} </td>
+      <td> {{ user.createdAt | date: shortDate }} </td>
+      <td> {{ user.updatedAt | date: shortDate }} </td>
+    </tr>
+  </tbody>
+</table>

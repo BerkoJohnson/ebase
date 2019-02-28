@@ -1,0 +1,43 @@
+<div class="box" style="width: 22rem;margin: 15rem auto;">
+  <form class="form" [formGroup]="loginForm" (ngSubmit)="submit()">
+    <div class="field">
+      <label for="email" class="label">Email Address</label>
+      <div class="control">
+        <input
+          type="email"
+          class="input"
+          name="email"
+          id="email"
+          formControlName="email"
+          [ngClass]="{ 'is-danger': f.email.touched && f.email.errors }"
+        >
+      </div>
+      <div *ngIf="f.email.touched && f.email.errors">
+        <p *ngIf="f.email.hasError('required')" class="help is-danger">Email is required</p>
+        <p *ngIf="f.email.hasError('email')" class="help is-danger">Provide a valid email</p>
+      </div>
+    </div>
+    <div class="field">
+      <label for="password" class="label">Password</label>
+      <div class="control">
+        <input class="input" formControlName="password" id="password" name="password" type="password">
+      </div>
+      <div *ngIf="f.password.touched && f.password.errors">
+        <p *ngIf="f.password.hasError('required')" class="help is-danger">Password is required</p>
+        <p *ngIf="f.password.hasError('minlength')" class="help is-danger">
+          Should be at least 6 characters in lenth.
+        </p>
+        <p *ngIf="f.password.hasError('maxlength')" class="help is-danger">
+          Should be at most 30 characters in lenth.
+        </p>
+        <p *ngIf="f.password.hasError('pattern')" class="help is-danger">
+          Should contain alpha-numeric characters and at least one(1) of these characters: "!@&?".
+        </p>
+      </div>
+
+    </div>
+
+    <button [disabled]="fm.invalid" class="button is-warning" *ngIf="!loggingIn">Login</button>
+    <button *ngIf="loggingIn" class="button is-warning is-loading">Login</button>
+  </form>
+</div>

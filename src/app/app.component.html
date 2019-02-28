@@ -1,0 +1,23 @@
+<!-- <div class="container"> -->
+<app-header ></app-header>
+<div class="container" style="margin-top: 20px;">
+  <div class="notification"
+       *ngIf="message$ | async as message"
+       [ngClass]="{'is-danger': message.type === 'danger', 'is-success': message.type === 'success' }"
+  >
+    <a class="delete"></a>
+    {{ message.text }}
+  </div>
+  <router-outlet></router-outlet>
+</div>
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <p>
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
+        voluptates.
+      </p>
+    </div>
+  </div>
+</footer>
+<!-- </div> -->
