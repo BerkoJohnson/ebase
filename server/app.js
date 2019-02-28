@@ -1,12 +1,9 @@
-/* eslint-disable no-console */
-/*eslint no-undef: "error"*/
-/*eslint-env node*/
-
 const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const path = require('path');
 
+const port = process.env.PORT || 3000;
 
 const app = express();
 app.use(express.json());
@@ -36,5 +33,5 @@ const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
-  app.listen(8000, () => console.log('Server is ready!'));
+  app.listen(port, () => console.log('Server is ready!'));
 });
