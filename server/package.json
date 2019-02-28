@@ -1,8 +1,0 @@
-{
-  "name": "Ebase",
-  "version": "1.0.0",
-  "description": "Ebase Server",
-  "main": "app.js",
-  "author": "Berko Johnson",
-  "license": "MIT"
-}
