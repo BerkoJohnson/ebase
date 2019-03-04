@@ -6,7 +6,7 @@ const {
 
 module.exports = app => {
   app.get('/api/v1/users', authenticate, Users.getAll);
-  app.post('/api/v1/users', , Users.createUser);
+  app.post('/api/v1/users', Users.createUser);
   app.post('/api/v1/login', Users.login);
   app.get('/api/v1/users/me', authenticate, Users.findMe);
   app.delete('/api/v1/users/me/token', authenticate, Users.logout);

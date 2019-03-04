@@ -33,5 +33,13 @@ const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
-  app.listen(port, () => console.log('Server is ready!'));
+  app.listen(port)
+    .on('error', (error) => {
+      if (error.code === 'EADDRINUSE') {
+        console.error(`Port ${port} is already in use`);
+        process.exit(1);
+      }
+    }).on('listening', () => {
+      console.log('@@@@@@@  Server listening on port ' + port + ' @@@@@@@')
+    });
 });
