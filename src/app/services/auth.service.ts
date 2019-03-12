@@ -48,16 +48,11 @@ export class AuthService {
     return (
       this.http
         // tslint:disable-next-line:quotemark
-        .post(
-          '/api/v1/login',
-          { email, password },
-          { observe: 'response' }
-        )
+        .post("/api/v1/login", { email, password }, { observe: "response" })
         .pipe(
           map(user => {
             if (user && user.headers.has('x-auth')) {
               localStorage.setItem('currentUser', user.headers.get('x-auth'));
-              console.log(this.decodeToken(user.headers.get('x-auth')));
             }
             return user.body;
           })
@@ -83,26 +78,28 @@ export class AuthService {
       const date = new Date();
       // @ts-ignore
       const currentDate = parseInt(date.getTime() / 1000, 10);
-      console.log(currentDate, 'iat', user.iat);
-      // return +user.exp > currentDate;
+      // console.log(+user.exp > currentDate);
+      return +user.exp > currentDate;
     }
     return false;
   }
 
   logout() {
     const token = localStorage.getItem('currentUser');
-    this.http.delete('/api/v1/users/me/token', {
-      headers: {
-        'x-auth': token
-      },
-      observe: 'response'
-    })
-    .pipe(
-      tap(x => {
-        return console.log(x);
-      }, e => {
-        return console.error(e);
+    this.http
+      .delete('/api/v1/users/me/token', {
+        headers: {
+          'x-auth': token
+        },
+        observe: 'response'
       })
+    .subscribe(
+      x => {
+        return console.log(x);
+      },
+      e => {
+        return console.error(e);
+      }
     );
 
     window.localStorage.removeItem('currentUser');

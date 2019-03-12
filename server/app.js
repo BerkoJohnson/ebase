@@ -15,6 +15,10 @@ app.use(express.static(path.join(__dirname, 'dist/ebase')));
 app.use(morgan('dev'));
 
 require('./routes/user.route')(app);
+require('./routes/position.route')(app);
+require('./routes/candidate.route')(app);
+require('./routes/voter.route')(app);
+
 
 app.use('*', (req, res) => res.sendFile(path.join(__dirname, 'dist/ebase', 'index.html')));
 
@@ -40,6 +44,8 @@ db.once('open', () => {
         process.exit(1);
       }
     }).on('listening', () => {
-      console.log('@@@@@@@  Server listening on port ' + port + ' @@@@@@@')
+      console.log(`Server listening on port ${port}. You can now visit http://localhost:${port}`);
+    }).on('close', () => {
+      console.log('Server closed. Good bye');
     });
 });

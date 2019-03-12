@@ -1,16 +1,10 @@
 <nav class="navbar is-dark" role="navigation" aria-label="main navigation" *ngIf="auth.checkToken()">
   <div class="navbar-brand">
     <a class="navbar-item" routerLink="">
-      <img src="assets/logo-nav@2x.png" width="112" height="28"/>
+      <img src="assets/logo-nav@2x.png" width="112" height="28" />
     </a>
 
-    <a
-      role="button"
-      class="navbar-burger burger"
-      aria-label="menu"
-      aria-expanded="false"
-      data-target="navbarBasicExample"
-    >
+    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
@@ -26,10 +20,16 @@
       <a class="navbar-item" routerLink="/users">
         Users
       </a>
+      <a class="navbar-item" routerLink="/students">
+        Students
+      </a>
+      <a class="navbar-item" routerLink="/elections">
+        Elections
+      </a>
 
-      <div class="navbar-item has-dropdown is-hoverable">
+      <!-- <div class="navbar-item has-dropdown is-hoverable">
         <a class="navbar-link">
-          More
+          Students
         </a>
 
         <div class="navbar-dropdown">
@@ -42,12 +42,33 @@
           <a class="navbar-item">
             Contact
           </a>
-          <hr class="navbar-divider"/>
+          <hr class="navbar-divider" />
           <a class="navbar-item">
             Report an issue
           </a>
         </div>
-      </div>
+      </div> -->
+      <!-- <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          Elections
+        </a>
+
+        <div class="navbar-dropdown">
+          <a class="navbar-item">
+            Positions
+          </a>
+          <a class="navbar-item">
+            Candidates
+          </a>
+          <a class="navbar-item">
+            Voters
+          </a>
+          <hr class="navbar-divider" />
+          <a class="navbar-item">
+            Election Reports
+          </a>
+        </div>
+      </div> -->
     </div>
 
     <div class="navbar-end">
@@ -56,22 +77,22 @@
         <div class="buttons">
           <div *ngIf="auth.checkToken()">
             <!--<div class="tags has-addons are-medium">-->
-              <!--<span class="tag is-success">-->
-                <!--{{ auth.getToken().lastName + ', ' + auth.getToken().firstName  }}-->
-              <!--</span>-->
-              <!--<a class="tag is-danger" (click)="auth.logout()">Logout</a>-->
+            <!--<span class="tag is-success">-->
+            <!--{{ auth.getToken().lastName + ', ' + auth.getToken().firstName  }}-->
+            <!--</span>-->
+            <!--<a class="tag is-danger" (click)="auth.logout()">Logout</a>-->
             <!--</div>-->
             <button class="button is-light is-static">
-              {{ auth.getToken().lastName + ', ' + auth.getToken().firstName  }}
+              <!-- {{ auth.getToken().lastName + ', ' + auth.getToken().firstName  }} -->
             </button>
             <a class="button is-danger" (click)="auth.logout()">
               <strong>Logout</strong>
             </a>
           </div>
           <!--<div *ngIf="!auth.checkToken()">-->
-            <!--<a class="button is-success" routerLink="/login">-->
-              <!--Log in-->
-            <!--</a>-->
+          <!--<a class="button is-success" routerLink="/login">-->
+          <!--Log in-->
+          <!--</a>-->
           <!--</div>-->
         </div>
       </div>

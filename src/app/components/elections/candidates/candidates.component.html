@@ -1,0 +1,55 @@
+<h1 class="title">Candidates</h1>
+<div class="columns">
+  <div class="column">
+    <div class="subtitle">
+      List of Candidates
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Position</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let candidate of candidates$ | async">
+          <td>{{ candidate.name}}</td>
+          <td>
+            {{ candidate.position?.title}}
+          </td>
+          <td>
+            <a class="delete" (click)="removeCandidate(candidate._id)"></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="column">
+    <form class="form" [formGroup]="newCandidate" (ngSubmit)="addCandidate()">
+      <div class="field">
+        <label for="name">Name</label>
+        <div class="control">
+          <input type="text" name="name" formControlName="name" class="input">
+        </div>
+      </div>
+      <div class="field">
+        <label for="position">Position</label>
+        <div class="control">
+          <div class="select">
+            <select name="position" formControlName="position">
+              <option>Select position</option>
+              <option *ngFor="let position of positions$ | async" [value]="position?._id">
+                {{ position?.title }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <button class="button is-primary" type="submit" >Add Candidate</button>
+      <!-- [disabled]="newCandidate.invalid" -->
+    </form>
+  </div>
+
+</div>

@@ -19,7 +19,7 @@ export class JwtInterceptor implements HttpInterceptor {
     if (this.authService.checkToken()) {
       req = req.clone({
         setHeaders: {
-          'x-auth': `Bearer ${this.authService.token}`
+          'x-auth': `${this.authService.token}`
         }
       });
     }

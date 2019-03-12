@@ -32,8 +32,12 @@ export class NewUserFormComponent implements OnInit {
   ngOnInit() {
   }
 
+    // Form input Getters
+
+
   submit() {
-    if (!this.f.valid) {
+    console.log(this.f);
+    if (this.newUserForm.invalid) {
       return;
     }
     this.saving = true;
@@ -53,7 +57,6 @@ export class NewUserFormComponent implements OnInit {
       });
   }
 
-  // Form input Getters
   get f() {
     return this.newUserForm.controls;
   }

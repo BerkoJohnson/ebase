@@ -25,8 +25,7 @@
       </div>
     </div>
 
-    <button [disabled]="f.invalid || saved" class="button is-warning" [ngClass]="{'is-loading': saving}">Save User</button>
-    <a (click)="saved = false" class="is-link">New</a>
+    <button [disabled]="newUserForm.invalid || saved" class="button is-warning" [ngClass]="{'is-loading': saving}">Save User</button>
 
   </form>
 

@@ -1,0 +1,39 @@
+.section-container {
+  display: grid;
+  grid-template-columns: 200px auto;
+  /* background-color: #aaa;
+  color: white; */
+}
+
+
+.section-sidebar {
+    background-color: green;
+}
+
+.section-nav {
+
+}
+
+.section-nav__list {
+  list-style-type: none;
+}
+
+
+.section-content {
+  padding: 0 10px;
+}
+
+.section-nav__item{
+
+}
+
+
+.section-nav__link {
+  display: block;
+  color: white;
+    padding: 20px;
+}
+
+.section-nav__link:hover {
+  background-color: rgba(255, 0, 0, 0.9);
+}
