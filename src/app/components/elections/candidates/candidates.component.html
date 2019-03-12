@@ -50,6 +50,24 @@
       <button class="button is-primary" type="submit" >Add Candidate</button>
       <!-- [disabled]="newCandidate.invalid" -->
     </form>
+    <hr>
+    <form class="form" (ngSubmit)="uploadPhoto" [formGroup]="CandidatePhotoForm">
+      <div class="field">
+        <label for="filePhoto" class="label"></label>
+        <input
+          type="file"
+          name="filePhoto"
+          formControlName="filePhoto"
+          (change)="showPhotoPreview($event)"
+          accept="image/*">
+      </div>
+    </form>
+    <div class="showPreview">
+      <figure class="image is-128x128">
+        <img [src]="imageUrl" alt="Candidate Photo">
+      </figure>
+
+    </div>
   </div>
 
 </div>
