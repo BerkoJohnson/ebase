@@ -2,8 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const path = require('path');
+const fs = require('fs');
+const multer  = require('multer')
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 const app = express();
 app.use(express.json());
@@ -14,11 +16,9 @@ app.use(express.urlencoded({
 app.use(express.static(path.join(__dirname, 'dist/ebase')));
 app.use(morgan('dev'));
 
-require('./routes/user.route')(app);
-require('./routes/position.route')(app);
-require('./routes/candidate.route')(app);
-require('./routes/voter.route')(app);
-
+fs.readdirSync(path.join(__dirname, 'routes')).map(file => {
+  require('./routes/'+file)(app);
+});
 
 app.use('*', (req, res) => res.sendFile(path.join(__dirname, 'dist/ebase', 'index.html')));
 

@@ -1,5 +1,5 @@
-const Position = require('../models/position.model');
-const Candidate = require('../models/candidate.model');
+const Candidate = require('../models').Candidate;
+const Position = require('../models').Position;
 
 module.exports = {
   async getall(req, res) {

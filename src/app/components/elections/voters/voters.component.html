@@ -1,3 +1,5 @@
-<p>
-  voters works!
-</p>
+<input type="file" (change)="onChange($event)" #fileInput style="display:none;">
+<button type="button" class="button" (click)="fileInput.click()">Select File</button>
+<div class="box is-4">
+  <img [src]="imgUrl" alt="">
+</div>

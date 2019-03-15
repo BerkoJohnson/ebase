@@ -10,11 +10,11 @@ import {CandidateService} from '../../../services/candidate.service';
 })
 export class CandidatesComponent implements OnInit {
   newCandidate;
-  CandidatePhotoForm;
+  selectedFile: File;
   positions$;
   candidates$;
-  imageUrl = 'assets/download.png';
-  imagePath;
+  imgUrl= 'assets/download.png';
+  lastSavedId: string;
 
   constructor(private fb: FormBuilder, private positionService: PositionService, private candidateService: CandidateService) { }
 
@@ -27,25 +27,25 @@ export class CandidatesComponent implements OnInit {
       position: ['', Validators.required]
     });
 
-
-    this.CandidatePhotoForm = this.fb.group({
-      filePhoto: ['', Validators.required]
-    });
   }
 
 
   // Show photo show
-  showPhotoPreview(e) {
-    if(e.target.files && e.target.files[0]) {
-      const reader = new FileReader();
-      reader.readAsDataURL(e.target.files[0]); // read file as data url
-
-      reader.onload = (event) => { // called once readAsDataURL is completed
-        // this.imageUrl = reader.result;
-        console.log('event: ', event);
-        console.log('reader.result: ', reader.result);
-      }
+  onChange(event: Event) {
+    this.selectedFile = event.target['files'][0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.imgUrl = e.target['result'];
     }
+    reader.readAsDataURL(event.target['files'][0]);
+  }
+
+  uploadData() {
+    const formData = new FormData();
+    formData.append('id', this.lastSavedId);
+    formData.append('image', this.selectedFile, this.selectedFile.name);
+    // formData.append('file', this.selectedFile);
+    return formData;
   }
 
   addCandidate() {
@@ -56,17 +56,34 @@ export class CandidatesComponent implements OnInit {
     this.candidateService.addCandidate({
       name: this.f.name.value,
       position: this.f.position.value
-    }).subscribe();
+    }).subscribe(
+      doc => {
+        if(doc) {
+          this.lastSavedId = doc['candidate']['_id'];
+        }
+      }
+    );
   }
 
 
-  removeCandidate(id) {
+  removeCandidate(id: string) {
     if(!id) {
       return;
     }
     this.candidateService.removeCandidate(id).subscribe();
   }
+
   get f() {
     return this.newCandidate.controls;
+  }
+
+
+  uploadPhoto() {
+    if(!this.lastSavedId) {
+      return;
+    }
+    this.candidateService
+      .uploadPhoto(this.uploadData())
+      .subscribe(x => console.log(x));
   }
 }

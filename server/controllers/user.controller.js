@@ -4,7 +4,9 @@ const mongoose = require("mongoose");
 const crypto = require("crypto");
 const _ = require("lodash");
 
-const User = require("../models/user.model");
+const User = require('../models').User;
+
+
 const helpers = require("../helpers");
 const userService = require("../services/user.service");
 

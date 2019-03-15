@@ -1,6 +1,8 @@
-const Voter = require('../models/voter.model');
-const Candidate = require('../models/candidate.model');
-const VotingSheet = require('../models/voting-sheet.model');
+const Candidate = require('../models').Candidate;
+const Voter = require('../models').Voter;
+const VotingSheet = require('../models').VotingSheet;
+
+const csvParser = require('csv-parser');
 
 module.exports = {
   async getall(req, res) {
@@ -19,6 +21,13 @@ module.exports = {
       res.status(200).send('Voter added');
     } catch (e) {
         res.status(400).json(e);
+    }
+  },
+  async addMultipleVoters(req, res) {
+    try {
+
+    } catch(e) {
+      res.status(400).json(e)
     }
   },
   async vote(req, res) {
