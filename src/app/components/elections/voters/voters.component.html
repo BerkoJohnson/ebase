@@ -1,5 +1,3 @@
-<input type="file" (change)="onChange($event)" #fileInput style="display:none;">
+<input type="file" (change)="onChange($event)" #fileInput style="display:none;" accept="text/csv">
 <button type="button" class="button" (click)="fileInput.click()">Select File</button>
-<div class="box is-4">
-  <img [src]="imgUrl" alt="">
-</div>
+<button type="button" (click)="uploadFile()">Add Voters</button>

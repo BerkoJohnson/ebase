@@ -1,0 +1,14 @@
+<form class="form box" [formGroup]="newSchoolForm" (ngSubmit)="saveSchool()">
+  <div class="field">
+    <label for="name" class="label">Name of School</label>
+    <input type="text" name="name" formControlName="name" class="input">
+  </div>
+  <div class="field">
+    <label for="yearEst" class="label">Year Established</label>
+    <input type="text" name="yearEst" formControlName="yearEst" class="input">
+  </div>
+  <div class="field">
+    <label for="crest" class="label">Upload Crest</label>
+    <input type="file" name="crest" formControlName="crest" class="input" accept="image/**">
+  </div>
+</form>

@@ -67,7 +67,7 @@ module.exports = {
         }
       });
 
-      await Candidate.findByIdAndUpdate(id, {photoPath: newPath}).exec();
+      await Candidate.findByIdAndUpdate(id, {photoPath: `/assets/candidates/${id}${ext}`}).exec();
       res.json({message: 'Upload complete.'});
     } catch (e) {
       res.status(400).json(e);

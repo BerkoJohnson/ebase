@@ -27,6 +27,18 @@ import { PositionsComponent } from './components/elections/positions/positions.c
 import { CandidatesComponent } from './components/elections/candidates/candidates.component';
 import { VotersComponent } from './components/elections/voters/voters.component';
 import { ReportsComponent } from './components/elections/reports/reports.component';
+import { SchoolComponent } from './components/school/school.component';
+import { SchoolRoomSetupComponent } from './components/school/room/room.component';
+import { CalenderComponent } from './components/school/calender/calender.component';
+import { NewSchoolComponent } from './components/school/new-school/new-school.component';
+import { CurrentSchoolInfoComponent } from './components/school/current-school-info/current-school-info.component';
+import { SchoolDepartmentSetupComponent } from './components/school/department/department.component';
+import { SidenavComponent } from './components/admins/sidenav/sidenav.component';
+import { AdminsComponent } from './components/admins/admins.component';
+import { DashboardComponent } from './components/admins/dashboard/dashboard.component';
+import { ImportStudentsComponent } from './components/students/import-students/import-students.component';
+import { RoomService } from './services/room.service';
+import { StudentService } from './services/student.service';
 
 @NgModule({
   declarations: [
@@ -43,7 +55,17 @@ import { ReportsComponent } from './components/elections/reports/reports.compone
     PositionsComponent,
     CandidatesComponent,
     VotersComponent,
-    ReportsComponent
+    ReportsComponent,
+    SchoolComponent,
+    SchoolDepartmentSetupComponent,
+    SchoolRoomSetupComponent,
+    CalenderComponent,
+    NewSchoolComponent,
+    CurrentSchoolInfoComponent,
+    SidenavComponent,
+    AdminsComponent,
+    DashboardComponent,
+    ImportStudentsComponent
   ],
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule, AppRoutingModule],
   providers: [
@@ -54,7 +76,9 @@ import { ReportsComponent } from './components/elections/reports/reports.compone
     Announcer,
     AuthGuard,
     PositionService,
-    CandidateService
+    CandidateService,
+    RoomService,
+    StudentService
   ],
   bootstrap: [AppComponent]
 })

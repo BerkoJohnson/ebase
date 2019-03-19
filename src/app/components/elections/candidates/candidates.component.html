@@ -1,13 +1,14 @@
 <h1 class="title">Candidates</h1>
 <div class="columns">
-  <div class="column">
+<div class="column is-8">
     <div class="subtitle">
       List of Candidates
     </div>
-    <table class="table">
+    <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
       <thead>
         <tr>
           <th>Name</th>
+          <th>Photo</th>
           <th>Position</th>
           <th>Actions</th>
         </tr>
@@ -16,21 +17,32 @@
         <tr *ngFor="let candidate of candidates$ | async">
           <td>{{ candidate.name}}</td>
           <td>
+            <figure class="image is-128x128">
+              <img [src]="candidate.photoPath || imgUrl" alt="">
+            </figure>
+          </td>
+          <td>
             {{ candidate.position?.title}}
           </td>
           <td>
-            <a class="delete" (click)="removeCandidate(candidate._id)"></a>
+            <span class="tag is-danger" (click)="removeCandidate(candidate._id)">
+            Remove
+            <button class="delete is-small"></button>
+            </span>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
   <div class="column">
+    <div class="subtitle">
+      Add new candidate?
+    </div>
     <form class="form" [formGroup]="newCandidate" (ngSubmit)="addCandidate()">
       <div class="field">
         <label for="name">Name</label>
         <div class="control">
-          <input type="text" name="name" formControlName="name" class="input">
+          <input type="text" name="name" formControlName="name" class="input" placeholder="Name of candidate">
         </div>
       </div>
       <div class="field">
@@ -55,7 +67,7 @@
       <input type="file" (change)="onChange($event)" #fileInput style="display:none;">
       <button type="button" class="button" (click)="fileInput.click()" style="margin-bottom:2px;">Select Candidate Photo</button>
       <div class="box">
-        <figure class = "is-128x128">
+        <figure class = "image is-128x128">
           <img [src]="imgUrl" alt="">
         </figure>
       </div>

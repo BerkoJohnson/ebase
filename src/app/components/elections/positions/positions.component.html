@@ -1,16 +1,16 @@
 <h1 class="title">Positions</h1>
 <div class="columns">
-  <div class="column">
+  <div class="column is-8">
     <div class="subtitle">
       Declared Positions
     </div>
-    <table class="table">
+    <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
       <thead>
         <tr>
           <th>Title</th>
           <th>Candidates</th>
           <th>Actions</th>
-        </tr>
+      </tr>
       </thead>
       <tbody>
         <tr *ngFor="let position of positions$ | async">
@@ -23,18 +23,24 @@
             </ul>
           </td>
           <td>
-            <a class="delete" (click)="removePosition(position._id)"></a>
+              <span class="tag is-danger" (click)="removePosition(position._id)">
+              Remove
+              <button class="delete is-small"></button>
+              </span>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
   <div class="column">
+    <div class="subtitle">
+      Add new position?
+    </div>
     <form class="form" [formGroup]="newPositionForm" (ngSubmit)="addPosition()">
       <div class="field">
         <label for="title">Title</label>
         <div class="control">
-          <input type="text" name="title" formControlName="title" class="input">
+          <input type="text" name="title" formControlName="title" class="input" placeholder="Title of position">
         </div>
       </div>
 

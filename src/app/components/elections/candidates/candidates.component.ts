@@ -21,6 +21,7 @@ export class CandidatesComponent implements OnInit {
   ngOnInit() {
     this.positions$ = this.positionService.positions$;
     this.candidates$ = this.candidateService.candidates$;
+    this.candidates$ = this.candidateService.candidates$;
 
     this.newCandidate = this.fb.group({
       name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/), Validators.minLength(6), Validators.maxLength(50)]],

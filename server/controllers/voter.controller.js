@@ -2,7 +2,10 @@ const Candidate = require('../models').Candidate;
 const Voter = require('../models').Voter;
 const VotingSheet = require('../models').VotingSheet;
 
-const csvParser = require('csv-parser');
+const csv = require('csv-parser');
+const papaParse = require('papaparse');
+const path = require('path');
+const fs = require('fs');
 
 module.exports = {
   async getall(req, res) {
@@ -26,8 +29,29 @@ module.exports = {
   async addMultipleVoters(req, res) {
     try {
 
+      const ext = path.extname(req.file.originalname);
+      const oldPath = `./${req.file.path}`;
+      const newPath = `./${oldPath}${ext}`;
+
+      const results =[];
+
+      fs.rename(oldPath, newPath, (err) => {
+        if(err) {
+          return;
+        }
+      });
+
+      fs.createReadStream(newPath).pipe(csv())
+        .on('data', (data) => {
+          results.push({no: data.NO, name: data.NAME});
+        })
+        .on('end', () => {
+          res.json(results);
+        })
+
+
     } catch(e) {
-      res.status(400).json(e)
+      res.status(400).json({e, i: 'Inside addMultipleVoters'});
     }
   },
   async vote(req, res) {
@@ -48,7 +72,7 @@ module.exports = {
       }
       res.status(200).send('Voter voted');
     } catch(e) {
-        res.status(400).json(e);
+        res.status(400).json({e, i: 'Inside vote'});
     }
   }
 }

@@ -65,6 +65,10 @@ export class CandidateService {
     return this.http.put(`${URL}/upload-photo`, body, {
       reportProgress: true,
       observe: 'events'
-    });
+    })
+    .pipe(map(x => {
+      this.loadCandidates();
+      return x;
+    }));
   }
 }

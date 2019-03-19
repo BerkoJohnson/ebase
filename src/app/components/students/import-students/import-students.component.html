@@ -1,0 +1,48 @@
+<h1 class="title">Import Students</h1>
+<div class="columns">
+  <div class="column is-8">
+      <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Student Name</th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Student's ID</td>
+            <td>
+              <ul>
+                <li>
+                  Student's Name
+                </li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+  <div class="column">
+    <span *ngIf="selectedFile">File selected for upload:
+      <br>
+      <b>{{selectedFile.name}}</b>
+      <br>
+      <br>
+    </span>
+
+    <div class="field">
+      <label for="room">Select Class</label>
+      <div class="control">
+        <div class="select">
+          <select (change)="onSelectRoom($event)">
+            <option >Select class</option>
+            <option *ngFor="let room of rooms$ | async" [value]="room._id">{{ room?.title }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <input type="file" (change)="onChange($event)" #fileInput style="display:none;" accept="text/csv">
+    <button type="button" [disabled]="!selectedRoom" class="button" (click)="fileInput.click()" style="margin-right: 10px;">Select File</button>
+    <button type="button" [disabled]="(!selectedFile && !selectedRoom) || !selectedFile" (click)="uploadFile()" class="button is-primary">Import Students</button>
+  </div>
+</div>
