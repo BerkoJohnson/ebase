@@ -1,0 +1,31 @@
+<div class="field">
+  <div class="control">
+    <div class="select is-info">
+      <select (change)="onSelectRoom($event)">
+        <option>Select class</option>
+        <option *ngFor="let room of rooms$ | async">
+          {{ room?.title}}
+        </option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="field has-addons">
+  <p class="control">
+    <span class="select">
+      <select (change)="onSelectSearchField($event)">
+        <option>Search field</option>
+        <option value="name">Name</option>
+      </select>
+    </span>
+  </p>
+  <p class="control is-expanded">
+    <input class="input" type="text" placeholder="Amount of money">
+  </p>
+  <p class="control">
+    <a class="button">
+      Transfer
+    </a>
+  </p>
+</div>

@@ -39,6 +39,7 @@ import { DashboardComponent } from './components/admins/dashboard/dashboard.comp
 import { ImportStudentsComponent } from './components/students/import-students/import-students.component';
 import { RoomService } from './services/room.service';
 import { StudentService } from './services/student.service';
+import { StudentsHomeComponent } from './components/students/students-home/students-home.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { StudentService } from './services/student.service';
     SidenavComponent,
     AdminsComponent,
     DashboardComponent,
-    ImportStudentsComponent
+    ImportStudentsComponent,
+    StudentsHomeComponent
   ],
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule, AppRoutingModule],
   providers: [

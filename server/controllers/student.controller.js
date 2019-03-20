@@ -52,17 +52,25 @@ module.exports = {
               });
             }
           });
+
       }, 1000);
 
-      const justImportedStudents = await Student.find().where({room: room}).select('yearOfAdmission name _id').exec();
-      res.status(200).json(justImportedStudents);
+      setTimeout(() => {
+        Student.find()
+          .where({room: room})
+          .select('yearOfAdmission name _id')
+          .exec()
+          .then(docs => {
+            res.status(200).json(docs);
+          });
+      }, 2000);
     } catch(error) {
       res.status(400).json(error);
     }
   },
   async getall(req, res) {
     try {
-      const students = await Student.find().exec();
+      const students = await Student.find().select('name room _id').populate('room', 'title').exec();
       res.status(200).json(students);
     } catch (e) {
       res.status(400).json(e);

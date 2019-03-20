@@ -4,19 +4,17 @@
       <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
         <thead>
           <tr>
-            <th>ID</th>
             <th>Student Name</th>
+            <th>Year of Admission</th>
         </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Student's ID</td>
+          <tr *ngFor="let student of students">
             <td>
-              <ul>
-                <li>
-                  Student's Name
-                </li>
-              </ul>
+              {{ student.name }}
+            </td>
+            <td>
+              {{ student.yearOfAdmission}}
             </td>
           </tr>
         </tbody>
@@ -30,8 +28,26 @@
       <br>
     </span>
 
+    <label class="checkbox">
+      <input type="checkbox" (change)="onAddYearOfAdmission($event)">
+        Add <b>Year of Admission</b> field
+    </label>
+    <hr>
+
+    <div class="field" *ngIf="addYearOfAdmission">
+      <label for="yearOfAdmission" class="label">Year of Admission</label>
+      <div class="control">
+        <div class="select">
+          <select (change)="onSelectYear($event)" name="yearOfAdmission">
+            <option >Select year</option>
+            <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
     <div class="field">
-      <label for="room">Select Class</label>
+      <label for="room" class="label">Select Class</label>
       <div class="control">
         <div class="select">
           <select (change)="onSelectRoom($event)">
@@ -41,8 +57,27 @@
         </div>
       </div>
     </div>
+
+
     <input type="file" (change)="onChange($event)" #fileInput style="display:none;" accept="text/csv">
-    <button type="button" [disabled]="!selectedRoom" class="button" (click)="fileInput.click()" style="margin-right: 10px;">Select File</button>
-    <button type="button" [disabled]="(!selectedFile && !selectedRoom) || !selectedFile" (click)="uploadFile()" class="button is-primary">Import Students</button>
+    <button type="button"
+      [disabled]="!selectedRoom"
+      class="button"
+      (click)="fileInput.click()"
+      style="margin-right: 10px;">
+      Click to Select File</button>
+    <span *ngIf="!addYearOfAdmission">
+      <button type="button"
+        [disabled]="(!selectedFile && !selectedRoom) || !selectedFile"
+        (click)="uploadFile()" class="button is-primary">
+        Import Students</button>
+    </span>
+    <span *ngIf="addYearOfAdmission">
+      <button type="button"
+        [disabled]="(!selectedFile && !selectedRoom && !yearOfAdmission) || !selectedFile || !yearOfAdmission || !selectedRoom"
+        (click)="uploadFile()"
+        class="button is-primary">
+        Import Students</button>
+    </span>
   </div>
 </div>

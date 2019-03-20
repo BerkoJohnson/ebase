@@ -20,6 +20,7 @@ import { DashboardComponent } from './components/admins/dashboard/dashboard.comp
 import { AdminsComponent } from './components/admins/admins.component';
 import { NewStudentComponent } from './components/students/new-student/new-student.component';
 import { ImportStudentsComponent } from './components/students/import-students/import-students.component';
+import { StudentsHomeComponent } from './components/students/students-home/students-home.component';
 
 
 
@@ -32,6 +33,7 @@ const routes: Routes = [
       { path: 'rooms', component: SchoolRoomSetupComponent },
       {path: 'calender', component: CalenderComponent},
       {path: "students", component: StudentsComponent, canActivate: [AuthGuard], children: [
+        {path: '', component: StudentsHomeComponent},
         {path: 'new', component: NewStudentComponent},
         {path: 'add-multiple', component: ImportStudentsComponent},
       ] },

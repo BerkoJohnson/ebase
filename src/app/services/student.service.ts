@@ -18,7 +18,7 @@ const URL = "/api/v1/students";
   providedIn: "root"
 })
 export class StudentService {
-  private _students = new BehaviorSubject<Student[]>(null);
+  private _students = new BehaviorSubject<StudentPayload[]>(null);
   public students$ = this._students.asObservable();
 
   constructor(private http: HttpClient) {
@@ -29,22 +29,22 @@ export class StudentService {
     this.getStudents().subscribe(docs => this._students.next(docs));
   }
 
-  getStudents(): Observable<Student[]> {
-    return this.http.get<Student[]>(URL);
+  getStudents(): Observable<StudentPayload[]> {
+    return this.http.get<StudentPayload[]>(URL);
   }
 
 
-  addStudent(body): Observable<StudentPayload> {
+  addStudent(body: any): Observable<StudentPayload> {
     return this.http
       .post<StudentPayload>(URL, body);
   }
 
-  addMultipleStudent(body): Observable<StudentPayload[]> {
+  addMultipleStudent(body: FormData): Observable<StudentPayload[]> {
     return this.http
       .post<StudentPayload[]>(`${URL}/multiple`, body);
   }
 
-  removeStudent(id): Observable<StudentPayload> {
+  removeStudent(id: string): Observable<StudentPayload> {
     return this.http
       .delete<StudentPayload>(`${URL}/${id}`)
       .pipe(
