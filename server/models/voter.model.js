@@ -2,10 +2,24 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const voterSchema = new Schema({
-  name: {
-    type: String,
-    trim: true,
-    required: true
+  student: {
+    type: Schema.Types.ObjectId,
+    ref: 'Student'
+  },
+  pin: {
+    type: Number
+  },
+  loggedIn: {
+    type: Boolean,
+    default: false
+  },
+  voted: {
+    type: Boolean,
+    default: false
+  },
+  room: {
+    type: Schema.Types.ObjectId,
+    ref: 'Room'
   }
 }, {
   timestamps: true

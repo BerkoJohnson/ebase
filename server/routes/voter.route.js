@@ -19,5 +19,6 @@ module.exports = app => {
   //app.post(URL/multiple, Voters.addMultipleVoters); // Add class-based voters
 
   app.get(URL, Voters.getall);
+  app.patch(`${URL}/:room`, Voters.generateVoters);
   app.put(`${URL}/:id/vote`, Voters.vote);
 }

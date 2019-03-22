@@ -1,11 +1,15 @@
 const Candidate = require('../models').Candidate;
 const Voter = require('../models').Voter;
 const VotingSheet = require('../models').VotingSheet;
+const Student = require('../models').Student;
+const GenerateVoter = require('../models').GenerateVoter;
 
 const csv = require('csv-parser');
 const papaParse = require('papaparse');
 const path = require('path');
 const fs = require('fs');
+const securePin = require('secure-pin');
+
 
 module.exports = {
   async getall(req, res) {
@@ -73,6 +77,40 @@ module.exports = {
       res.status(200).send('Voter voted');
     } catch(e) {
         res.status(400).json({e, i: 'Inside vote'});
+    }
+  },
+  async generateVoters(req, res) {
+    try {
+      const room = req.params.room;
+      const genTable = await GenerateVoter.findOne({room}).exec();
+
+      if (genTable !== null) {
+        return res.status(400).send('Already generated for this class');
+      }
+
+      const students = await Student.find().where({room: room}).exec();
+      let savedVoters = [];
+
+      for (student of students) {
+        let pin = securePin.generatePinSync(4);
+        let voter = new Voter({student: student._id, pin: pin, room: room});
+        await voter.save();
+
+        savedVoters.push(student._id);
+      }
+
+      if(students.length === savedVoters.length) {
+        const voters = await Voter.find().where({room: room}).select('student _id pin room').populate('room', 'title').populate('student', 'name').exec();
+
+        const genTable = new GenerateVoter({room});
+        await genTable.save();
+        
+        return res.json(voters);
+      }
+
+      res.json(students);
+    } catch (e) {
+      res.status(400).json(e);
     }
   }
 }

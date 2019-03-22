@@ -1,31 +1,89 @@
-<div class="field">
-  <div class="control">
-    <div class="select is-info">
-      <select (change)="onSelectRoom($event)">
-        <option>Select class</option>
-        <option *ngFor="let room of rooms$ | async">
-          {{ room?.title}}
-        </option>
-      </select>
+<div class="level">
+  <div class="level-left">
+    <div class="level-item">
+      <div class="field">
+        <div class="control">
+          <div class="select is-info">
+            <select (change)="onSelectRoom($event)">
+              <option>Select class</option>
+              <option *ngFor="let room of rooms$ | async" [value]="room?._id">
+                {{ room?.title}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
     </div>
+    <div class="level-item">
+      <div class="field has-addons">
+        <p class="control">
+          <span class="select">
+            <select (change)="onSelectSearchField($event)">
+              <option>Search field</option>
+              <option *ngFor="let field of fields" [value]="field?.name">
+                {{ field?.title }}
+              </option>
+            </select>
+          </span>
+        </p>
+        <p class="control is-expanded">
+          <input class="input" type="text"  placeholder="Amount of money">
+        </p>
+        <p class="control">
+          <a class="button">
+            Search
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="level-right">
+
   </div>
 </div>
 
-<div class="field has-addons">
-  <p class="control">
-    <span class="select">
-      <select (change)="onSelectSearchField($event)">
-        <option>Search field</option>
-        <option value="name">Name</option>
-      </select>
-    </span>
-  </p>
-  <p class="control is-expanded">
-    <input class="input" type="text" placeholder="Amount of money">
-  </p>
-  <p class="control">
-    <a class="button">
-      Transfer
-    </a>
-  </p>
+
+
+<div class="container">
+  <nav class="level">
+
+    <div class="level-left">
+      <div class="level-item">
+        <p class="subtitle is-5">
+          <strong>123</strong> posts
+        </p>
+      </div>
+      <div class="level-item">
+        <div class="field has-addons">
+          <p class="control">
+            <input class="input" type="text" placeholder="Find a post">
+          </p>
+          <p class="control">
+            <button class="button">
+              Search
+            </button>
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="level-right">
+      <p class="level-item"><strong>All</strong></p>
+      <p class="level-item"><a>Published</a></p>
+      <p class="level-item"><a>Drafts</a></p>
+      <p class="level-item"><a>Deleted</a></p>
+      <p class="level-item"><a class="button is-success">New</a></p>
+    </div>
+  </nav>
+
+
+  <div class="tile is-ancestor">
+    <div class="tile is-4-desktop">
+      <app-new-user-form></app-new-user-form>
+    </div>
+    <div class="tile is-9">
+      <app-users-list></app-users-list>
+    </div>
+  </div>
 </div>
