@@ -6,6 +6,7 @@ import { Announcer } from "./announcer";
 
 export interface Position {
   title: string;
+  votingType: string;
 }
 const URL = "/api/v1/positions";
 

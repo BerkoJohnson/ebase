@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { VotersService, RoomPayload, Voter } from '../../../services/voters.service';
+import { RoomService, Room } from '../../../services/room.service';
 
 @Component({
   selector: 'app-voters',
@@ -6,31 +9,45 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./voters.component.css']
 })
 export class VotersComponent implements OnInit {
-  // imgUrl = "/assets/download.png";
-  selectedFile: File;
+  rooms$: Observable<RoomPayload[]>;
+  selectedRoom: string;
+  voters: Voter[];
+  generating= 'pending!';
+  roomSelectedForGenerateVoters: string;
 
-  constructor() { }
+  allRooms$: Observable<Room[]>;
+  constructor(private voterService: VotersService, private roomService: RoomService) { }
 
   ngOnInit() {
+    this.rooms$ = this.voterService.rooms$;
+    this.allRooms$ = this.roomService.rooms$;
   }
 
-  // onChange(event: Event) {
-  //   this.selectedFile = event.target['files'][0];
-  // //   const reader = new FileReader();
-  // //   reader.onload = (e) => {
-  // //     this.imgUrl = e.target['result'];
-  // //   }
-  // //   reader.readAsDataURL(event.target['files'][0]);
-  // console.log(this.selectedFile);
-  // }
-  //
-  // uploadData() {
-  //   const formData = new FormData();
-  //   formData.append('file', this.selectedFile, this.selectedFile.name);
-  //   return formData;
-  // }
-  //
-  // uploadFile() {
-  //
-  // }
+  onSelectRoom(room: string) {
+    this.selectedRoom = room;
+
+    this.voterService.getClassVoters(room)
+      .subscribe(docs => this.voters = docs);
+  }
+
+
+  onSelectedForGenerate(event: Event) {
+    this.generating = 'pending!';
+    this.roomSelectedForGenerateVoters = event.target['value'];
+  }
+
+  onGenerateVoters() {
+    if(!this.roomSelectedForGenerateVoters) {
+      return;
+    }
+    this.generating = 'loading!';
+    this.voterService
+      .generateVotersForRoom(this.roomSelectedForGenerateVoters)
+      .subscribe(docs => {
+        if(docs) {
+          this.voters = docs;
+          this.generating = 'finished!'
+        }
+      });
+  }
 }

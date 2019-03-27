@@ -21,40 +21,42 @@ import { AdminsComponent } from './components/admins/admins.component';
 import { NewStudentComponent } from './components/students/new-student/new-student.component';
 import { ImportStudentsComponent } from './components/students/import-students/import-students.component';
 import { StudentsHomeComponent } from './components/students/students-home/students-home.component';
+import { VoteComponent } from './components/vote/vote.component';
 
 
 
 const routes: Routes = [
   { path: "", component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'admins', canActivate: [AuthGuard],component: AdminsComponent, children: [
-    { path: "school", component: SchoolComponent, canActivate: [AuthGuard], children: [
-      { path: 'new', component: NewSchoolComponent },
-      { path: 'departments', component: SchoolDepartmentSetupComponent },
-      { path: 'rooms', component: SchoolRoomSetupComponent },
-      {path: 'calender', component: CalenderComponent},
-      {path: "students", component: StudentsComponent, canActivate: [AuthGuard], children: [
-        {path: '', component: StudentsHomeComponent},
-        {path: 'new', component: NewStudentComponent},
-        {path: 'add-multiple', component: ImportStudentsComponent},
-      ] },
-      { path: '', component: CurrentSchoolInfoComponent }
-    ]
-  },
-    { path: "users", component: UsersComponent, canActivate: [AuthGuard] },
-    {
-      path: "elections",
-      component: ElectionsComponent,
-      canActivate: [AuthGuard],
-      children: [
-        {path: 'positions', component: PositionsComponent},
-        {path: 'candidates', component: CandidatesComponent},
-        {path: 'voters', component: VotersComponent},
-        {path: 'reports', component: ReportsComponent},
+      { path: "school", component: SchoolComponent, canActivate: [AuthGuard], children: [
+        { path: 'new', component: NewSchoolComponent },
+        { path: 'departments', component: SchoolDepartmentSetupComponent },
+        { path: 'rooms', component: SchoolRoomSetupComponent },
+        {path: 'calender', component: CalenderComponent},
+        {path: "students", component: StudentsComponent, canActivate: [AuthGuard], children: [
+          {path: '', component: StudentsHomeComponent},
+          {path: 'new', component: NewStudentComponent},
+          {path: 'add-multiple', component: ImportStudentsComponent},
+        ] },
+        { path: '', component: CurrentSchoolInfoComponent }
       ]
     },
-    {path: '', component: DashboardComponent},
-  ]
-},
+      { path: "users", component: UsersComponent, canActivate: [AuthGuard] },
+      {
+        path: "elections",
+        component: ElectionsComponent,
+        canActivate: [AuthGuard],
+        children: [
+          {path: 'positions', component: PositionsComponent},
+          {path: 'candidates', component: CandidatesComponent},
+          {path: 'voters', component: VotersComponent},
+          {path: 'reports', component: ReportsComponent},
+        ]
+      },
+      {path: '', component: DashboardComponent},
+    ],
+  },
+  {path: 'vote', component: VoteComponent, canActivate: [AuthGuard]},
   { path: "login", component: LoginComponent },
   { path: "**", redirectTo: "" }
 ];

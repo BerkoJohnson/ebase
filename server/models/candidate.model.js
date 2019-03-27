@@ -17,8 +17,18 @@ const candidateSchema = new Schema({
     ref: 'Position'
   },
   votes: {
-    type: Number,
-    default: 0
+    thumbsUp: {
+      type: Number,
+      default: 0
+    },
+    Yes: {
+      type: Number,
+      default: 0
+    },
+    No: {
+      type: Number,
+      default: 0
+    }
   },
   photoPath: String
 }, {

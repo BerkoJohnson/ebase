@@ -4,7 +4,7 @@ const Position = require('../models').Position;
 module.exports = {
   async getall(req, res) {
     try {
-      const positions = await Position.find().populate({path:'candidates', select:'name -_id'}).exec();
+      const positions = await Position.find().populate({path:'candidates', select:'name photoPath'}).exec();
       res.json(positions);
     } catch (e) {
       res.status(400).json(e);
@@ -13,8 +13,8 @@ module.exports = {
 
   async addPosition(req, res) {
     try {
-      const {title} = req.body;
-      const position = new Position({title});
+      const {title, votingType} = req.body;
+      const position = new Position({title, votingType});
       await position.save();
       res.status(200).send({message: 'Position saved'});
     } catch(e) {

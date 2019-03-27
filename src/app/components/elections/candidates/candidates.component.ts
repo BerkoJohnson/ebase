@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, Validators} from '@angular/forms';
-import {PositionService} from '../../../services/position.service';
-import {CandidateService} from '../../../services/candidate.service';
+import {FormBuilder, Validators, FormGroup} from '@angular/forms';
+import {PositionService, Position} from '../../../services/position.service';
+import {CandidateService, Candidate} from '../../../services/candidate.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-candidates',
@@ -9,10 +10,11 @@ import {CandidateService} from '../../../services/candidate.service';
   styleUrls: ['./candidates.component.css']
 })
 export class CandidatesComponent implements OnInit {
-  newCandidate;
+  newCandidate: FormGroup;
+  updateCandidateForm: FormGroup;
   selectedFile: File;
-  positions$;
-  candidates$;
+  positions$: Observable<Position[]>;
+  candidates$: Observable<Candidate[]>;
   imgUrl= 'assets/download.png';
   lastSavedId: string;
 
@@ -21,14 +23,32 @@ export class CandidatesComponent implements OnInit {
   ngOnInit() {
     this.positions$ = this.positionService.positions$;
     this.candidates$ = this.candidateService.candidates$;
-    this.candidates$ = this.candidateService.candidates$;
+    // this.candidates$ = this.candidateService.candidates$;
 
     this.newCandidate = this.fb.group({
       name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/), Validators.minLength(6), Validators.maxLength(50)]],
       position: ['', Validators.required]
     });
 
+    this.updateCandidateForm = this.fb.group({
+      name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/), Validators.minLength(6), Validators.maxLength(50)]],
+      position: ['', Validators.required]
+    });
   }
+
+  selectedCandidate;
+
+
+  onUpdateCandidate(candidate: Candidate) {
+    this.selectedCandidate = candidate;
+    this.updateCandidateForm.patchValue({
+      "name": candidate.name,
+      "position": candidate.position['_id']
+    }, {
+      emitEvent: true
+    })
+  }
+
 
 
   // Show photo show
@@ -67,6 +87,21 @@ export class CandidatesComponent implements OnInit {
   }
 
 
+  updateCandidate() {
+    if(this.updateCandidateForm.invalid) {
+      return;
+    }
+
+    this.candidateService.updateCandidate({
+      name: this.upf.name.value,
+      position: this.upf.position.value
+    }, this.selectedCandidate._id).subscribe(
+      doc => {
+        console.log(doc);
+      }
+    );
+  }
+
   removeCandidate(id: string) {
     if(!id) {
       return;
@@ -78,6 +113,10 @@ export class CandidatesComponent implements OnInit {
     return this.newCandidate.controls;
   }
 
+  get upf() {
+    return this.updateCandidateForm.controls;
+  }
+
 
   uploadPhoto() {
     if(!this.lastSavedId) {
@@ -86,5 +125,10 @@ export class CandidatesComponent implements OnInit {
     this.candidateService
       .uploadPhoto(this.uploadData())
       .subscribe(x => console.log(x));
+  }
+
+  onChangePhoto(candidate) {
+    this.lastSavedId = candidate._id;
+    this.imgUrl = 'assets/download.png';
   }
 }

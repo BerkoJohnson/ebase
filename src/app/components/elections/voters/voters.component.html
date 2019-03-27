@@ -1,3 +1,62 @@
-<input type="file" (change)="onChange($event)" #fileInput style="display:none;" accept="text/csv">
-<button type="button" class="button" (click)="fileInput.click()">Select File</button>
-<button type="button" (click)="uploadFile()">Add Voters</button>
+<div class="box">
+  <button type="button" class="button" *ngFor="let rm of rooms$ | async" (click)="onSelectRoom(rm.room._id)" [ngClass]="{'is-active': rm.room._id === selectedRoom}">
+      {{ rm.room?.title}}
+  </button>
+</div>
+<div class="columns">
+<div class="column">
+  <div class="box" *ngIf="voters">
+    <h1 style="text-transform: uppercase;font-weight: bold" class="subtitle">LIst of voters in the selected class</h1>
+    <hr>
+
+    <table class="table is-hoverable is-fullwidth is-bordered is-stripped">
+      <thead>
+        <tr>
+          <th>Name of Student</th>
+          <th>PIN</th>
+          <th>Class</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let voter of voters">
+          <td>{{ voter.student.name}}</td>
+          <td> {{ voter.pin }} </td>
+          <td> {{ voter.room.title }} </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="column is-3">
+  <div class="box">
+    <h1 style="text-transform: uppercase;font-weight: bold" class="subtitle">Generate Voters and their pins</h1>
+    <hr>
+    <div class="field">
+      <label for="room" class="label">Class</label>
+      <div class="control">
+        <div class="select">
+          <select name="room" (change)="onSelectedForGenerate($event)">
+            <option>Select position</option>
+            <option *ngFor="let room of allRooms$ | async" [value]="room?._id">
+              {{room?.title }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <button
+      type="button"
+      class="button is-info"
+      (click)="onGenerateVoters()"
+      [disabled]="!roomSelectedForGenerateVoters || generating==='finished!'"
+      [ngClass]="{'is-loading': generating==='loading!', 'is-success': generating==='finished!'}">
+        <span *ngIf="generating !== 'finished!' else finishedTemp">
+          Generate!
+        </span>
+        <ng-template #finishedTemp>
+          Generated
+        </ng-template>
+    </button>
+  </div>
+</div>
+</div>

@@ -11,12 +11,14 @@ import {PositionService} from '../../../services/position.service';
 export class PositionsComponent implements OnInit {
   newPositionForm;
   positions$;
+  votingTypes = ["ThumbsUp", "Yes/No"];
 
   constructor(private fb: FormBuilder, private positionService: PositionService) { }
 
   ngOnInit() {
     this.newPositionForm = this.fb.group({
-      title: ['', [Validators.required]]
+      title: ['', [Validators.required]],
+      votingType: ['ThumbsUp', Validators.required]
     });
 
     this.positions$ = this.positionService.positions$;
@@ -27,7 +29,7 @@ export class PositionsComponent implements OnInit {
       return;
     }
     this.positionService
-      .addPosition({title: this.f.title.value})
+      .addPosition({title: this.f.title.value, votingType: this.f.votingType.value})
       .subscribe(x => {
         this.newPositionForm.get('title').value = '';
     });

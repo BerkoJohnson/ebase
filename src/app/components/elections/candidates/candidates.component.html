@@ -20,21 +20,21 @@
             <figure class="image is-128x128">
               <img [src]="candidate.photoPath || imgUrl" alt="">
             </figure>
+            <button type="button" class="button is-primary" (click)="onChangePhoto(candidate)">Change photo</button>
           </td>
           <td>
             {{ candidate.position?.title}}
           </td>
           <td>
-            <span class="tag is-danger" (click)="removeCandidate(candidate._id)">
-            Remove
-            <button class="delete is-small"></button>
-            </span>
+            <a (click)="removeCandidate(candidate._id)" class="button is-danger">Remove</a>
+            <a (click)="onUpdateCandidate(candidate)" class="button is-primary">Update</a>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
   <div class="column">
+      <div class="" *ngIf="!selectedCandidate">
     <div class="subtitle">
       Add new candidate?
     </div>
@@ -60,8 +60,36 @@
       </div>
 
       <button class="button is-primary" type="submit" >Add Candidate</button>
-      <!-- [disabled]="newCandidate.invalid" -->
     </form>
+</div>
+  <div class="" *ngIf="selectedCandidate">
+    <div class="subtitle">
+      Add new candidate?
+    </div>
+    <form class="form" [formGroup]="updateCandidateForm" (ngSubmit)="updateCandidate()">
+      <div class="field">
+        <label for="name">Name</label>
+        <div class="control">
+          <input type="text" name="name" formControlName="name" class="input" placeholder="Name of candidate">
+        </div>
+      </div>
+      <div class="field">
+        <label for="position">Position</label>
+        <div class="control">
+          <div class="select">
+            <select name="position" formControlName="position">
+              <option>Select position</option>
+              <option *ngFor="let position of positions$ | async" [value]="position?._id">
+                {{ position?.title }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <button class="button is-info" type="submit" >Update</button>
+    </form>
+  </div>
+
     <hr>
     <div class="box" *ngIf="lastSavedId">
       <input type="file" (change)="onChange($event)" #fileInput style="display:none;">

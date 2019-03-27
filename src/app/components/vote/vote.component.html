@@ -1,0 +1,135 @@
+<div class="container">
+  <div class="" style="text-align: center">
+    <h1 class="title">Atebubu Senior High School</h1>
+    <h2 class="subtitle">Electoral Commission</h2>
+  </div>
+  <hr>
+  <!-- <h1>Welcome {{voter.student.name}}</h1> -->
+  <hr>
+  <div class="columns"  style="margin:60px 0;">
+      <div class="column"  *ngIf="voter">
+        <div class="box">
+          <h1 class="title is-info has-text-centered">Voting Screen</h1>
+          <div class="columns">
+              <div class="column is-2">
+                <article class="message is-dark">
+                  <div class="message-header">
+                    <p>Voting Instructions</p>
+                    <button class="delete" aria-label="delete"></button>
+                  </div>
+                  <div class="message-body">
+                    <ul>
+                      <li>Click on the <b>VOTE</b> button below the candidate of your choice</li>
+                    </ul>
+                  </div>
+                </article>
+
+                <article class="message is-warning">
+                  <div class="message-header">
+                    <p>Warning</p>
+                    <button class="delete" aria-label="delete"></button>
+                  </div>
+                  <div class="message-body">
+                    You can skip voting for a position if you <b>do not wish</b> to vote
+                    for a particular position.
+                  </div>
+                </article>
+
+
+               </div>
+            <div class="column">
+              <article class="message is-dark" *ngFor="let position of positions$ |  async">
+                <div class="message-header">
+                  <p>{{position.title}}</p>
+                  <button class="delete" aria-label="delete"></button>
+                </div>
+                <div class="message-body">
+                  <div class="columns">
+
+                    <div class="column is-3" *ngFor="let candidate of position.candidates">
+                      <div class="card">
+                        <div class="card-image">
+                          <figure class="image">
+                            <img [src]="candidate.photoPath" alt="candidate.name">
+                          </figure>
+                        </div>
+                        <div class="card-content">
+                              <p class="subtitle is-5">{{ candidate.name }}</p>
+                        </div>
+                        <footer class="card-footer" *ngIf="position.votingType === 'ThumbsUp'">
+                          <a class="card-footer-item button is-light" (click)="vote(position, candidate,'ThumbsUp')">VOTE</a>
+                        </footer>
+                        <footer class="card-footer" *ngIf="position.votingType === 'Yes/No'">
+                          <a class="card-footer-item" (click)="vote(position, candidate, 'Yes')">YES</a>
+                          <a class="card-footer-item" (click)="vote(position, candidate, 'No')">NO</a>
+                        </footer>
+                      </div>
+                    </div>
+
+
+                  </div>
+                </div>
+              </article>
+              <button
+                type="button"
+                class="button is-danger is-large is-fullwidth"
+                (click)="onFinishVoting()"
+                [disabled]="votingObject.length === 0">
+              FINISH VOTING!!!
+              </button>
+            </div>
+            <div class="column is-2">
+              <button
+                type="button"
+                class="button is-danger is-large is-fullwidth"
+                (click)="onFinishVoting()"
+                [disabled]="votingObject.length === 0">
+                FINISH!!!
+              </button>
+              <div class="" *ngIf="votingObject">
+                <hr>
+                <strong>YOUR CHOICES:</strong>
+                <div class="content">
+                  <ol type="1" *ngFor="let v of votingObject" style="font-size: 12px;text-transform: uppercase;">
+                    <li>{{ v.position.title }} <br> <b>{{v.candidate.name}}&mdash;{{v.voted}}</b></li>
+                  </ol>
+                </div>
+
+              </div>
+          </div>
+        </div>
+        </div>
+      </div>
+
+
+      <div class="column is-3" *ngIf="!voter" style="margin:0 auto;">
+        <div class="box"  style="margin:20px;">
+            <div class="notification is-danger" *ngIf="message">
+            <button class="delete"></button>
+            <strong>{{message}}</strong>
+            </div>
+        <form  [formGroup]="login" class="form" (ngSubmit)="onSubmit()">
+          <div class="field">
+            <label class="label">Enter Pin</label>
+            <div class="control">
+              <input
+                class="input"
+                type="password"
+                placeholder="Enter your PIN code"
+                formControlName="pin"
+                [ngClass] = "{'is-danger': pin.touched && pin.hasError('required')}">
+            </div>
+            <p
+              *ngIf="pin.touched && pin.hasError('required')"
+              class="help is-danger"
+              [ngClass]="{'is-danger': pin.touched && pin.hasError('required')}"
+              >This field is required</p>
+          </div>
+          <div class="control">
+        <button class="button is-warning" type="submit" [disabled]="l.invalid">Submit</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

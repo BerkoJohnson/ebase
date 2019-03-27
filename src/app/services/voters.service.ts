@@ -4,22 +4,91 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
+export interface RoomPayload {
+  _id: string;
+  room: string;
+}
+
+export interface Voter {
+  student: {
+    _id?: string;
+    name: string;
+  },
+  _id: string;
+  pin: string;
+  room: {
+    _id?: string;
+    title: string;
+  }
+}
+
+const URL  = '/api/v1/voters';
+
 @Injectable({
   providedIn: 'root'
 })
 export class VotersService {
-  constructor(private http: HttpClient, private auth: AuthService) {}
+  private _rooms = new BehaviorSubject<RoomPayload[]>(null);
+  public readonly rooms$ = this._rooms.asObservable();
 
+  private _voter = new BehaviorSubject<Voter>(null);
+  public readonly voter$ = this._voter.asObservable();
+
+
+
+  constructor(private http: HttpClient, private auth: AuthService) {
+    this.loadRooms();
+  }
+
+  loadRooms() {
+    this.getRooms().subscribe(docs => {
+      this._rooms.next(docs);
+    })
+  }
+
+  getRooms():Observable<RoomPayload[]> {
+    return this.http.get<RoomPayload[]>(`${URL}/imported-classes`);
+  }
+
+  getClassVoters(room: string): Observable<Voter[]> {
+    return this.http.get<Voter[]>(`${URL}/${room}`)
+  }
 
   getVoters() {
-    return this.http.get('/api/v1/voters');
+    return this.http.get(URL);
   }
 
-  addVoter() {
-
+  generateVotersForRoom(room: string): Observable<Voter[]>{
+    return this.http.patch<Voter[]>(`${URL}/generate-voters`, {room}).pipe(
+      map(docs => {
+        if(docs) this.loadRooms();
+        return docs;
+      })
+    );
   }
 
-  addVoters(body) {
-    return this.http.post('/api/v1/voters', body);
+  login(pin: string): Observable<Voter> {
+    return this.http.post<Voter>(`${URL}/login`, {pin}).pipe(
+      map(doc => {
+        if(doc['voter']) {
+          this._voter.next(doc);
+        }
+        return doc;
+      })
+    );
+  }
+
+  vote(body, voter) {
+    console.log(body);
+    console.log(voter);
+    return this.http.put(`${URL}/${voter['_id']}/vote`, body)
+    .pipe(
+      map(doc => {
+        if(doc) {
+          this._voter.next(null);
+        }
+        return doc;
+      })
+    );
   }
 }

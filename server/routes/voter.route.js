@@ -14,11 +14,10 @@ const upload = multer({
 const URL = '/api/v1/voters';
 
 module.exports = app => {
-  app.post(`${URL}/multiple`, upload.single('file'), Voters.addMultipleVoters);
-  app.post(URL, Voters.addVoter);
-  //app.post(URL/multiple, Voters.addMultipleVoters); // Add class-based voters
-
-  app.get(URL, Voters.getall);
-  app.patch(`${URL}/:room`, Voters.generateVoters);
+  app.post(`${URL}/login`, Voters.login);
   app.put(`${URL}/:id/vote`, Voters.vote);
+  app.get(`${URL}/imported-classes`, Voters.getImportedClasses);
+  app.get(URL, Voters.getall);
+  app.get(`${URL}/:room`, Voters.votersPerClass);
+  app.patch(`${URL}/generate-voters`, Voters.generateVoters);
 }

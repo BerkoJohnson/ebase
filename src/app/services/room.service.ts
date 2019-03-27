@@ -4,7 +4,12 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { catchError, map, tap } from "rxjs/operators";
 
 export interface Room {
+  _id: string;
   title: string;
+  dept: {
+    _id: string;
+    title: string;
+  }
 }
 const URL = "/api/v1/rooms";
 

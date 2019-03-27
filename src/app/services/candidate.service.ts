@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { Announcer } from './announcer';
+// import { Announcer } from './announcer';
 import { PositionService } from './position.service';
 
 export interface Candidate {
   name: string;
   position: string;
+  id?: string
 }
 // interface Payload {
 //   message: string;
@@ -39,6 +40,18 @@ export class CandidateService {
 
   addCandidate(candidate: Candidate) {
     return this.http.post(URL, candidate).pipe(
+      map(x => {
+        if (x) {
+          this.loadCandidates();
+          this.positionService.loadPositions();
+        }
+        return x;
+      })
+    );
+  }
+
+  updateCandidate(candidate, id) {
+    return this.http.put(`${URL}/${id}`, candidate).pipe(
       map(x => {
         if (x) {
           this.loadCandidates();

@@ -15,9 +15,10 @@ module.exports = {
       const candidates = await Candidate.find().populate('position', 'title').select('name _id votes photoPath position').exec();
       res.status(200).json(candidates);
     } catch (e) {
-        res.status(401).json(e);
+        res.status(400).json(e);
     }
   },
+
   async addCandidate(req, res) {
     try {
       const {name, position} = req.body;
@@ -29,9 +30,26 @@ module.exports = {
       }
       res.status(200).send({message: 'Candidate saved.', candidate});
     } catch (e) {
-        res.status(401).json(e);
+        res.status(400).json(e);
     }
   },
+
+  async updateCandidate(req, res) {
+    try {
+      const {name, position} = req.body;
+      const id = req.params.id;
+
+      const candidate = await Candidate.findByIdAndUpdate(id, {name, position}, {new: true}).exec();
+
+      if(candidate) {
+        await Position.findByIdAndUpdate(position, {$push: {candidates: candidate._id}}).exec();
+      }
+      res.status(200).send({message: 'Candidate saved.'});
+    } catch (e) {
+        res.status(400).json(e);
+    }
+  },
+
   async removeCandidate(req, res) {
     try {
       const id = req.params.id;
@@ -41,7 +59,7 @@ module.exports = {
       }
       res.status(200).send({message: 'Candidate removed'});
     } catch(e) {
-        res.status(401).json(e);
+        res.status(400).json(e);
     }
   },
   async getCandidate(req, res) {
@@ -50,7 +68,7 @@ module.exports = {
       const candidate = await Candidate.findById(id).populate('position', 'title').select('name _id votes photoPath position').exec();
       res.status(200).json(candidate);
     } catch(e) {
-        res.status(401).json(e);
+        res.status(400).json(e);
     }
   },
   async uploadPhoto(req, res) {

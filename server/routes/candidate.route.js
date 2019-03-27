@@ -17,5 +17,6 @@ module.exports = app => {
   app.post(URL, Candidates.addCandidate);
   app.put(`${URL}/upload-photo`, upload.single('image'), Candidates.uploadPhoto);
   app.get(`${URL}/:id`, Candidates.getCandidate);
+  app.put(`${URL}/:id`, Candidates.updateCandidate);
   app.delete(`${URL}/:id`, Candidates.removeCandidate);
 }

@@ -43,6 +43,17 @@
           <input type="text" name="title" formControlName="title" class="input" placeholder="Title of position">
         </div>
       </div>
+      <div class="field">
+        <label for="position">Voting Type</label>
+        <div class="control">
+          <div class="select">
+            <select name="position" formControlName="votingType">
+              <option>Select Voting Type</option>
+              <option *ngFor="let vt of votingTypes" [value]="vt">{{ vt }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
 
       <button class="button is-primary" type="submit">Add Position</button>
     </form>

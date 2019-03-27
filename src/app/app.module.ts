@@ -40,6 +40,8 @@ import { ImportStudentsComponent } from './components/students/import-students/i
 import { RoomService } from './services/room.service';
 import { StudentService } from './services/student.service';
 import { StudentsHomeComponent } from './components/students/students-home/students-home.component';
+import { VotersService } from './services/voters.service';
+import { VoteComponent } from './components/vote/vote.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +69,8 @@ import { StudentsHomeComponent } from './components/students/students-home/stude
     AdminsComponent,
     DashboardComponent,
     ImportStudentsComponent,
-    StudentsHomeComponent
+    StudentsHomeComponent,
+    VoteComponent
   ],
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule, AppRoutingModule],
   providers: [
@@ -80,7 +83,8 @@ import { StudentsHomeComponent } from './components/students/students-home/stude
     PositionService,
     CandidateService,
     RoomService,
-    StudentService
+    StudentService,
+    VotersService
   ],
   bootstrap: [AppComponent]
 })

@@ -20,68 +20,39 @@ module.exports = {
         res.status(400).json(e);
     }
   },
-  async addVoter(req, res) {
-    try {
-      const {name} = req.body;
-      const voter = new Voter({name});
-      await voter.save();
-      res.status(200).send('Voter added');
-    } catch (e) {
-        res.status(400).json(e);
-    }
-  },
-  async addMultipleVoters(req, res) {
-    try {
 
-      const ext = path.extname(req.file.originalname);
-      const oldPath = `./${req.file.path}`;
-      const newPath = `./${oldPath}${ext}`;
-
-      const results =[];
-
-      fs.rename(oldPath, newPath, (err) => {
-        if(err) {
-          return;
-        }
-      });
-
-      fs.createReadStream(newPath).pipe(csv())
-        .on('data', (data) => {
-          results.push({no: data.NO, name: data.NAME});
-        })
-        .on('end', () => {
-          res.json(results);
-        })
-
-
-    } catch(e) {
-      res.status(400).json({e, i: 'Inside addMultipleVoters'});
-    }
-  },
   async vote(req, res) {
     try {
       const id = req.params.id;
-      const {candidate} = req.body;
-
-      const ifVotedAlready = await VotingSheet.findOne({voter: id}).exec();
-
-      if(ifVotedAlready) {
-        return res.status(401).send('Has voted already');
+      // console.log(req.body);
+      const voteDataSaved = 0;
+      for (voteData of req.body) {
+        const {candidate, position, voted} = voteData;
+        const candidateInDb = await Candidate.findById(candidate._id).populate('position').exec();
+        if(candidateInDb.position.votingType === 'ThumbsUp' ) {
+          await Candidate.findByIdAndUpdate(candidate, {$inc: {'votes.thumbsUp': 1}}, {new: true}).exec();
+        }
+        else if(candidateInDb.position.votingType === 'Yes/No' && voted ==='Yes') {
+          await Candidate.findByIdAndUpdate(candidate, {$inc: {'votes.Yes': 1}}, {new: true}).exec();
+        }
+        else if(candidateInDb.position.votingType === 'Yes/No' && voted ==='No') {
+          await Candidate.findByIdAndUpdate(candidate, {$inc: {'votes.No': 1}}, {new: true}).exec();
+        }
+        voteDataSaved++;
       }
-      const votedForCandidate = await Candidate.findByIdAndUpdate(candidate, {$inc: {votes: 1}}, {new: true}).exec();
-
-      if(candidate) {
-        const sheet = new VotingSheet({voter: id, candidate: votedForCandidate._id});
-        await sheet.save();
+        const voter = await Voter.findByIdAndUpdate(id, {voted: true}, {new: true})
+      if(voteDataSaved === req.body.length && voter) {
+        res.send('Vote successfull')
       }
-      res.status(200).send('Voter voted');
+
     } catch(e) {
-        res.status(400).json({e, i: 'Inside vote'});
+        res.status(400).json(e);
     }
   },
+
   async generateVoters(req, res) {
     try {
-      const room = req.params.room;
+      const room = req.body.room;
       const genTable = await GenerateVoter.findOne({room}).exec();
 
       if (genTable !== null) {
@@ -104,11 +75,50 @@ module.exports = {
 
         const genTable = new GenerateVoter({room});
         await genTable.save();
-        
+
         return res.json(voters);
       }
 
       res.json(students);
+    } catch (e) {
+      res.status(400).json(e);
+    }
+  },
+  async getImportedClasses(req, res) {
+    try {
+      const rooms = await GenerateVoter.find().select('room').populate('room', 'title').exec();
+      res.json(rooms);
+
+    } catch (e) {
+      res.status(400).json(e);
+    }
+  },
+  async votersPerClass(req, res) {
+    try {
+      const room = req.params.room;
+      const voters = await Voter.find().where({room: room}).select('student _id pin room').populate('room', 'title').populate('student', 'name').exec();
+
+      res.json(voters);
+    } catch (e) {
+      res.status(400).json(e);
+    }
+  },
+  async login(req, res) {
+    try {
+      const {pin} = req.body;
+      const voterExists = await Voter.findOne({pin}).exec();
+      const voterVoted = await Voter.findOne({pin: pin, voted: true}).exec();
+
+      if(!voterExists) {return res.status(400).json({message: 'You are not a registered voter!!'});}
+      if(voterVoted) {return res.status(400).json({message: 'You have already voted!!'});}
+
+      const voter = await Voter.findOneAndUpdate({pin}, {loggedIn: true}, {new: true}).exec();
+
+      // if(voter) {
+      //   const voterLoggedIn = await Voter.findById(voter._id).populate('student', 'name').select('student pin loggedIn voted room ').exec();
+      // }
+      res.json({voter});
+
     } catch (e) {
       res.status(400).json(e);
     }

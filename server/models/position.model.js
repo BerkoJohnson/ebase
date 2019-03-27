@@ -13,7 +13,17 @@ const positionSchema = new Schema({
     type:Number,
     default: new Date().getFullYear()
   },
-  candidates: [{ ref: 'Candidate', type: Schema.Types.ObjectId }]
+  candidates: [
+    {
+      ref: 'Candidate',
+      type: Schema.Types.ObjectId
+    }
+  ],
+  votingType: {
+    type: String,
+    enum: ['ThumbsUp','Yes/No'],
+    default: 'ThumbsUp'
+  }
 }, {
   timestamps: true
 });

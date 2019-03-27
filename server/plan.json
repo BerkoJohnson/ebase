@@ -1,0 +1,25 @@
+{
+  "Election": {
+    "title": "",
+    "year": "current_year"
+  },
+  "Position": {
+    "title": "new-position",
+    "year": "current_year",
+    "candidates": [],
+    "types": ["ThumbsUp","Yes/No"]
+  },
+  "Candidate": {
+    "student_id": "saved_form_two_student's_id",
+    "position":"choose_position",
+    "votes": ["array_of_strings_based_on_position_type"],
+    "photoPath": "pathofimgurl"
+  },
+  "Voter": {
+    "student_id": "saved_form_two_student's_id",
+    "pin":"4-digit-pin-for-verification",
+    "loggedIn":"true/false",
+    "voted": ["ThumbsUp","Yes","No"],
+    "room":"student's_class_id"
+  }
+}
