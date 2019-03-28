@@ -50,4 +50,8 @@ export class VotersComponent implements OnInit {
         }
       });
   }
+
+  generatePins() {
+    this.voterService.generate().subscribe(o => console.log(o));
+  }
 }

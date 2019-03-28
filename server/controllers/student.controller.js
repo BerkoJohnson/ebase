@@ -39,13 +39,13 @@ module.exports = {
       setTimeout(() => {
         fs.createReadStream(newPath).pipe(csv())
           .on('data', (data) => {
-            results.push({no: data.NO, name: data.NAME});
+            results.push({no: data.NO, name: data.NAME, room:data.CLASS});
           })
           .on('end', () => {
             for (let i=0; i<results.length; i++) {
               const student = new Student({
                 name: results[i].name,
-                room: room
+                room: results[i].room
               });
               student.save().then(doc => {
                 savedToDb.push(doc._id);

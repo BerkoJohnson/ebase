@@ -79,8 +79,6 @@ export class VotersService {
   }
 
   vote(body, voter) {
-    console.log(body);
-    console.log(voter);
     return this.http.put(`${URL}/${voter['_id']}/vote`, body)
     .pipe(
       map(doc => {
@@ -90,5 +88,9 @@ export class VotersService {
         return doc;
       })
     );
+  }
+
+  generate() {
+      return this.http.patch<Voter[]>(`${URL}/generate-pins`, {pins: true});
   }
 }

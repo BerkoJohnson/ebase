@@ -26,12 +26,12 @@ export class CandidatesComponent implements OnInit {
     // this.candidates$ = this.candidateService.candidates$;
 
     this.newCandidate = this.fb.group({
-      name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/), Validators.minLength(6), Validators.maxLength(50)]],
+      name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\- ]+$/), Validators.minLength(6), Validators.maxLength(50)]],
       position: ['', Validators.required]
     });
 
     this.updateCandidateForm = this.fb.group({
-      name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/), Validators.minLength(6), Validators.maxLength(50)]],
+      name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\- ]+$/), Validators.minLength(6), Validators.maxLength(50)]],
       position: ['', Validators.required]
     });
   }

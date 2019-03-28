@@ -16,10 +16,6 @@ const voterSchema = new Schema({
   voted: {
     type: Boolean,
     default: false
-  },
-  room: {
-    type: Schema.Types.ObjectId,
-    ref: 'Room'
   }
 }, {
   timestamps: true

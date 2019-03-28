@@ -20,4 +20,5 @@ module.exports = app => {
   app.get(URL, Voters.getall);
   app.get(`${URL}/:room`, Voters.votersPerClass);
   app.patch(`${URL}/generate-voters`, Voters.generateVoters);
+  app.patch(`${URL}/generate-pins`, Voters.generatePins);
 }

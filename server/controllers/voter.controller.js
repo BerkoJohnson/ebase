@@ -30,13 +30,13 @@ module.exports = {
         const {candidate, position, voted} = voteData;
         const candidateInDb = await Candidate.findById(candidate._id).populate('position').exec();
         if(candidateInDb.position.votingType === 'ThumbsUp' ) {
-          await Candidate.findByIdAndUpdate(candidate, {$inc: {'votes.thumbsUp': 1}}, {new: true}).exec();
+          await Candidate.findByIdAndUpdate(candidate._id, {$inc: {'votes.thumbsUp': 1}}, {new: true}).exec();
         }
         else if(candidateInDb.position.votingType === 'Yes/No' && voted ==='Yes') {
-          await Candidate.findByIdAndUpdate(candidate, {$inc: {'votes.Yes': 1}}, {new: true}).exec();
+          await Candidate.findByIdAndUpdate(candidate._id, {$inc: {'votes.Yes': 1}}, {new: true}).exec();
         }
         else if(candidateInDb.position.votingType === 'Yes/No' && voted ==='No') {
-          await Candidate.findByIdAndUpdate(candidate, {$inc: {'votes.No': 1}}, {new: true}).exec();
+          await Candidate.findByIdAndUpdate(candidate._id, {$inc: {'votes.No': 1}}, {new: true}).exec();
         }
         voteDataSaved++;
       }
@@ -114,13 +114,34 @@ module.exports = {
 
       const voter = await Voter.findOneAndUpdate({pin}, {loggedIn: true}, {new: true}).exec();
 
-      // if(voter) {
-      //   const voterLoggedIn = await Voter.findById(voter._id).populate('student', 'name').select('student pin loggedIn voted room ').exec();
-      // }
       res.json({voter});
 
     } catch (e) {
       res.status(400).json(e);
     }
-  }
+  },
+  async generatePins(req, res) {
+    try {
+      const students = await Student.find().exec();
+      let savedVoters = [];
+
+      for (student of students) {
+        let pin = securePin.generatePinSync(4);
+        let voter = new Voter({student: student._id, pin: pin});
+        await voter.save();
+
+        savedVoters.push(student._id);
+      }
+
+      if(students.length === savedVoters.length) {
+        const voters = await Voter.find().select('student _id pin').populate('student', 'name').exec();
+
+        return res.json(voters);
+      }
+
+      res.json(students);
+    } catch (e) {
+      res.status(400).json(e);
+    }
+  },
 }
