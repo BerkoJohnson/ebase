@@ -4,14 +4,17 @@
     <h2 class="subtitle">Electoral Commission</h2>
   </div>
   <hr>
-  <!-- <h1>Welcome {{voter.student.name}}</h1> -->
-  <hr>
+
   <div class="columns"  style="margin:60px 0;">
       <div class="column"  *ngIf="voter">
         <div class="box">
           <h1 class="title is-info has-text-centered">Voting Screen</h1>
           <div class="columns">
               <div class="column is-2">
+                <div class="notification is-warning">
+                    <h1 *ngIf="voter">Welcome, <br> <strong>{{voter.name}}</strong></h1>
+                  </div>
+                  <hr>
                 <article class="message is-dark">
                   <div class="message-header">
                     <p>Voting Instructions</p>
@@ -21,17 +24,6 @@
                     <ul>
                       <li>Click on the <b>VOTE</b> button below the candidate of your choice</li>
                     </ul>
-                  </div>
-                </article>
-
-                <article class="message is-warning">
-                  <div class="message-header">
-                    <p>Warning</p>
-                    <button class="delete" aria-label="delete"></button>
-                  </div>
-                  <div class="message-body">
-                    You can skip voting for a position if you <b>do not wish</b> to vote
-                    for a particular position.
                   </div>
                 </article>
 
@@ -56,7 +48,7 @@
                         <div class="card-content">
                               <p class="subtitle is-5">{{ candidate.name }}</p>
                         </div>
-                        <footer class="card-footer" *ngIf="position.votingType === 'ThumbsUp'">
+                        <footer class="card-footer" *ngIf="position.votingType === 'ThumbsU+p'">
                           <a class="card-footer-item button is-light" (click)="vote(position, candidate,'ThumbsUp')">VOTE</a>
                         </footer>
                         <footer class="card-footer" *ngIf="position.votingType === 'Yes/No'">
@@ -79,6 +71,7 @@
               </button>
             </div>
             <div class="column is-2">
+
               <button
                 type="button"
                 class="button is-danger is-large is-fullwidth"
@@ -86,6 +79,7 @@
                 [disabled]="votingObject.length === 0">
                 FINISH!!!
               </button>
+
               <div class="" *ngIf="votingObject">
                 <hr>
                 <strong>YOUR CHOICES:</strong>
@@ -101,13 +95,12 @@
         </div>
       </div>
 
-
       <div class="column is-3" *ngIf="!voter" style="margin:0 auto;">
         <div class="box"  style="margin:20px;">
-            <div class="notification is-danger" *ngIf="message">
-            <button class="delete"></button>
-            <strong>{{message}}</strong>
-            </div>
+        <div class="notification is-danger" *ngIf="message">
+          <button class="delete"></button>
+          <strong>{{message}}</strong>
+        </div>
         <form  [formGroup]="login" class="form" (ngSubmit)="onSubmit()">
           <div class="field">
             <label class="label">Enter Pin</label>

@@ -8,7 +8,7 @@ interface Votes {
   position: {
     title: string;
     _id: string;
-    votedType: string;
+    votingType: string;
   },
   candidate: {
     _id: string;
@@ -29,6 +29,7 @@ export class VoteComponent implements OnInit {
   voterID: string;
   login: FormGroup;
   message: string;
+  isError =false;
   chosenPositions: string[] =[];
 
   constructor(
@@ -53,7 +54,7 @@ export class VoteComponent implements OnInit {
       position: {
         title: position.title,
         _id: position._id,
-        votedType: votedType
+        votingType: position.votingType
       },
       candidate: {
         _id: candidate._id,
@@ -71,11 +72,13 @@ export class VoteComponent implements OnInit {
   }
 
   onFinishVoting() {
-    const voter = this.voter['voter'];
-    this.voterService.vote(this.votingObject,voter).subscribe(doc => {
+    this.voterService.vote(this.votingObject,this.voter).subscribe(doc => {
       if(doc) {
         this.votingObject = [];
-        console.log(doc)
+        if(doc['message']) {
+          this.message = doc['message'];
+          console.log(this.message);
+        }
       }
       this.login.reset();
     });
@@ -88,6 +91,7 @@ export class VoteComponent implements OnInit {
     this.voterService.login(this.pin.value).subscribe(doc => {
       if(doc['message']) {
         this.message = doc['message'];
+        console.log(this.message);
       }
     });
   }

@@ -71,7 +71,7 @@ export class VotersService {
     return this.http.post<Voter>(`${URL}/login`, {pin}).pipe(
       map(doc => {
         if(doc['voter']) {
-          this._voter.next(doc);
+          this._voter.next(doc['voter']);
         }
         return doc;
       })

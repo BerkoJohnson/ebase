@@ -26,8 +26,7 @@ export class VotersComponent implements OnInit {
   onSelectRoom(room: string) {
     this.selectedRoom = room;
 
-    this.voterService.getClassVoters(room)
-      .subscribe(docs => this.voters = docs);
+
   }
 
 

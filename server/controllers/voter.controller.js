@@ -24,25 +24,33 @@ module.exports = {
   async vote(req, res) {
     try {
       const id = req.params.id;
-      // console.log(req.body);
-      const voteDataSaved = 0;
+      const checkedVoter = await Voter.findById(id).exec();
+
+      if(checkedVoter.loggedIn && checkedVoter.voted) {
+        return res.send({mess: 'You cannot vote again. It\'s not allowed.'})
+      }
+
+      const voteDataSaved = [];
       for (voteData of req.body) {
         const {candidate, position, voted} = voteData;
-        const candidateInDb = await Candidate.findById(candidate._id).populate('position').exec();
-        if(candidateInDb.position.votingType === 'ThumbsUp' ) {
-          await Candidate.findByIdAndUpdate(candidate._id, {$inc: {'votes.thumbsUp': 1}}, {new: true}).exec();
+        // // console.log(JSON.stringify(req.body, undefined, 2));
+        // console.log(candidate._id,voted);
+
+        if(position.votingType === 'ThumbsUp' ) {
+          await Candidate.findByIdAndUpdate(candidate._id, {$inc: {"votes.thumbsUp": 1}}).exec();
         }
-        else if(candidateInDb.position.votingType === 'Yes/No' && voted ==='Yes') {
-          await Candidate.findByIdAndUpdate(candidate._id, {$inc: {'votes.Yes': 1}}, {new: true}).exec();
+        else if(position.votingType === 'Yes/No' && voted ==='Yes') {
+          await Candidate.findByIdAndUpdate(candidate._id, {$inc: {"votes.Yes": 1}}).exec();
         }
-        else if(candidateInDb.position.votingType === 'Yes/No' && voted ==='No') {
-          await Candidate.findByIdAndUpdate(candidate._id, {$inc: {'votes.No': 1}}, {new: true}).exec();
+        else if(position.votingType === 'Yes/No' && voted ==='No') {
+          await Candidate.findByIdAndUpdate(candidate._id, {$inc: {"votes.No": 1}}).exec();
         }
-        voteDataSaved++;
+        voteDataSaved.push([candidate._id]);
       }
+
         const voter = await Voter.findByIdAndUpdate(id, {voted: true}, {new: true})
       if(voteDataSaved === req.body.length && voter) {
-        res.send('Vote successfull')
+        res.send({mes: 'Vote successfull'})
       }
 
     } catch(e) {
@@ -127,7 +135,7 @@ module.exports = {
 
       for (student of students) {
         let pin = securePin.generatePinSync(4);
-        let voter = new Voter({student: student._id, pin: pin});
+        let voter = new Voter({student: student._id, pin: pin, name: student.name});
         await voter.save();
 
         savedVoters.push(student._id);

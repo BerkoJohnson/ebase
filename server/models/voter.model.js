@@ -6,6 +6,7 @@ const voterSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Student'
   },
+  name: String,
   pin: {
     type: Number
   },
